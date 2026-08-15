@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   title: "FACECAN • Ponto Facial",
   description: "Sistema empresarial de controle de ponto facial",
   applicationName: "FACECAN",
+  manifest: "/manifest.webmanifest",
+  icons: { icon: "/icon.svg" },
   themeColor: "#0f1419",
 };
 
