@@ -1,8 +1,0 @@
-﻿Adiciona next.config.js e atualiza dependências para remover avisos e vulnerabilidades
-
-- Adiciona next.config.js com outputFileTracingRoot para silenciar o aviso de workspace root do Next.js.
-- Executado `npm audit fix --force`, atualizadas dependências (Next.js, jspdf, etc.) para corrigir vulnerabilidades reportadas.
-- Reconstruído o projeto e verificado que `next build` completa com sucesso.
-- Nota: Next.js atualizou automaticamente tsconfig.json (moduleResolution e jsx).
-
-Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
