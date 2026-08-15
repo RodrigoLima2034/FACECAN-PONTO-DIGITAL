@@ -1,94 +1,73 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  setAdminCookie,
+  attachAdminCookie,
   requestIp,
 } from "@/lib/security";
 import db from "@/lib/db";
 
 export const runtime = "nodejs";
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await req.json();
 
-    const email = String(body?.email || "").trim();
-    const password = String(body?.password || "");
+    const email = String(body.email || "").trim();
+    const password = String(body.password || "");
 
-    if (!email || !password) {
-      return NextResponse.json(
-        { message: "Informe usuário e senha." },
-        { status: 400 }
-      );
-    }
+    const expectedEmail =
+      process.env.ADMIN_EMAIL || "admin@empresa.local";
 
-    const adminPassword = process.env.ADMIN_PASSWORD;
+    const expectedPassword =
+      process.env.ADMIN_PASSWORD ||
+      "change-this-before-production";
 
-    if (!adminPassword) {
-      console.error("ADMIN_PASSWORD não configurado.");
-
-      return NextResponse.json(
-        { message: "Login administrativo não configurado no servidor." },
-        { status: 500 }
-      );
-    }
-
-    if (password !== adminPassword) {
-      try {
-        db.prepare(
-          `INSERT INTO audit_logs
-          (actor, action, resource, ip, details)
-          VALUES (?, ?, ?, ?, ?)`
-        ).run(
-          email,
-          "LOGIN_FAILED",
-          "admin",
-          requestIp(request),
-          "Credenciais inválidas"
-        );
-      } catch (error) {
-        console.error("Erro ao registrar tentativa de login:", error);
-      }
-
+    if (
+      email !== expectedEmail ||
+      password !== expectedPassword
+    ) {
       return NextResponse.json(
         { message: "Credenciais inválidas." },
         { status: 401 }
       );
     }
 
-    const response = NextResponse.json({ ok: true });
-
-    const token = setAdminCookie(email);
-
-    response.cookies.set("facecan_admin", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 8,
+    const response = NextResponse.json({
+      ok: true,
     });
 
-    try {
-      db.prepare(
-        `INSERT INTO audit_logs
-        (actor, action, resource, ip, details)
-        VALUES (?, ?, ?, ?, ?)`
-      ).run(
-        email,
-        "LOGIN",
-        "admin",
-        requestIp(request),
-        "Login administrativo"
-      );
-    } catch (error) {
-      console.error("Erro ao registrar auditoria:", error);
-    }
+    attachAdminCookie(response, email);
+
+    db.prepare(
+      `
+      INSERT INTO audit_logs(
+        actor,
+        action,
+        resource,
+        ip,
+        details
+      )
+      VALUES(?,?,?,?,?)
+      `
+    ).run(
+      email,
+      "LOGIN",
+      "admin",
+      requestIp(req),
+      "Login administrativo"
+    );
 
     return response;
   } catch (error) {
-    console.error("Erro no login administrativo:", error);
+    console.error(
+      "Erro no login administrativo:",
+      error
+    );
 
     return NextResponse.json(
-      { message: "Erro interno no servidor." },
+      {
+        message:
+          "Não foi possível realizar o login.",
+      },
       { status: 500 }
     );
   }
