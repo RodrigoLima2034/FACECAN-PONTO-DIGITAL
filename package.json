@@ -1,0 +1,45 @@
+{
+  "name": "facecan-ponto-digital-enterprise",
+  "version": "4.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1693.0",
+    "axios": "^1.7.0",
+    "better-sqlite3": "^11.8.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.0.0",
+    "face-api.js": "^0.22.2",
+    "framer-motion": "^11.0.0",
+    "jose": "^5.2.0",
+    "js-cookie": "^3.0.5",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^0.403.0",
+    "next": "^14.2.33",
+    "oracledb": "^6.10.0",
+    "pdfkit": "^0.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-query": "^3.39.3",
+    "recharts": "^2.13.0",
+    "zod": "^3.24.2",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20.17.24",
+    "@types/pdfkit": "^0.13.8",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.7.3"
+  }
+}
