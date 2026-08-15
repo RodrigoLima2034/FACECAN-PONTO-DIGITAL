@@ -1,0 +1,12 @@
+{
+  "name": "FACECAN • Ponto Facial",
+  "short_name": "FACECAN",
+  "description": "Terminal empresarial de controle de ponto facial",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1419",
+  "theme_color": "#0f1419",
+  "orientation": "any",
+  "lang": "pt-BR",
+  "icons": [{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
